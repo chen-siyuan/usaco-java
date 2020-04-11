@@ -1,3 +1,3 @@
-# usaco-java
+# USACO Solutions in Java
 
-This repository is for my practice programs on the USACO website. Created on Apr.11, 2020.
+This repository is for my practice solutions on the USACO website. I'm currently in rank Silver.
