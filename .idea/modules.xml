@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/202003_Silver/Problem 2/cereal/cereal.iml" filepath="$PROJECT_DIR$/202003_Silver/Problem 2/cereal/cereal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201903_Silver/Problem 2/cowjump/cowjump.iml" filepath="$PROJECT_DIR$/201903_Silver/Problem 2/cowjump/cowjump.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201601_Silver/Problem 3/gates/gates.iml" filepath="$PROJECT_DIR$/201601_Silver/Problem 3/gates/gates.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201512_Silver/Problem 2/highcard/highcard.iml" filepath="$PROJECT_DIR$/201512_Silver/Problem 2/highcard/highcard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201701_Silver/Problem 2/hps/hps.iml" filepath="$PROJECT_DIR$/201701_Silver/Problem 2/hps/hps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201903_Silver/Problem 1/leftout/leftout.iml" filepath="$PROJECT_DIR$/201903_Silver/Problem 1/leftout/leftout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201801_Silver/Problem 1/lifeguards/lifeguards.iml" filepath="$PROJECT_DIR$/201801_Silver/Problem 1/lifeguards/lifeguards.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201702_Silver/Problem 2/maxcross/maxcross.iml" filepath="$PROJECT_DIR$/201702_Silver/Problem 2/maxcross/maxcross.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201912_Silver/Problem 2/meetings/meetings.iml" filepath="$PROJECT_DIR$/201912_Silver/Problem 2/meetings/meetings.iml" />
+      <module fileurl="file://$PROJECT_DIR$/200802_Silver/Problem 2/meteor/meteor.iml" filepath="$PROJECT_DIR$/200802_Silver/Problem 2/meteor/meteor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201912_Silver/Problem 3/milkvisits/milkvisits.iml" filepath="$PROJECT_DIR$/201912_Silver/Problem 3/milkvisits/milkvisits.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201612_Silver/Problem 3/moocast/moocast.iml" filepath="$PROJECT_DIR$/201612_Silver/Problem 3/moocast/moocast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/202003_Silver/Problem 3/moop/moop.iml" filepath="$PROJECT_DIR$/202003_Silver/Problem 3/moop/moop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/201801_Silver/Problem 3/mootube/mootube.iml" filepath="$PROJECT_DIR$/201801_Silver/Problem 3/mootube/mootube.iml" />
+      <module fileurl="file://$PROJECT_DIR$/202003_Silver/Problem 1/socdist/socdist.iml" filepath="$PROJECT_DIR$/202003_Silver/Problem 1/socdist/socdist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/usaco-java.iml" filepath="$PROJECT_DIR$/.idea/usaco-java.iml" />
+    </modules>
+  </component>
+</project>

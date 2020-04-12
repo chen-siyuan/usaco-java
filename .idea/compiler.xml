@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="maxcross" />
+        <module name="cowjump" />
+        <module name="hps" />
+        <module name="moop" />
+        <module name="cereal" />
+        <module name="moocast" />
+        <module name="meetings" />
+        <module name="milkvisits" />
+        <module name="socdist" />
+        <module name="meteor" />
+        <module name="mootube" />
+        <module name="lifeguards" />
+        <module name="gates" />
+        <module name="leftout" />
+        <module name="highcard" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cereal" target="11" />
+      <module name="cowjump" target="11" />
+      <module name="gates" target="11" />
+      <module name="highcard" target="11" />
+      <module name="hps" target="11" />
+      <module name="leftout" target="11" />
+      <module name="lifeguards" target="11" />
+      <module name="maxcross" target="11" />
+      <module name="meetings" target="11" />
+      <module name="meteor" target="11" />
+      <module name="milkvisits" target="11" />
+      <module name="moocast" target="11" />
+      <module name="moop" target="11" />
+      <module name="mootube" target="11" />
+      <module name="socdist" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
