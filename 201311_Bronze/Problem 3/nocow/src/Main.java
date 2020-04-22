@@ -82,7 +82,7 @@ public class Main {
         Arrays.sort(inputIndexes);
 
         int pointer = 0;
-        while(pointer < numLines && inputIndexes[pointer] < index) {
+        while(pointer < numLines && inputIndexes[pointer] <= index) {
             pointer++;
             index++;
         }
