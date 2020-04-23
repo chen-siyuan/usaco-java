@@ -1,6 +1,6 @@
 # USACO Solutions in Java
 
-This repository is for storing my practice solutions for USACO contests. I'm currently in Rank Silver.
+This repository is for storing my practice solutions for USACO contests. I'm currently in Rank Silver. Note: for problems around and before 2013, "bronze" is equivalent to current "silver."
 
 ## Where to find the problems
 
