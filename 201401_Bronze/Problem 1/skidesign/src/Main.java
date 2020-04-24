@@ -7,8 +7,6 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new FileReader("skidesign.in"));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
         br.close();
 
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("skidesign.out")));
