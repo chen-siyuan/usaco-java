@@ -47,7 +47,7 @@ public class Main {
 
             if(!flag) record.put(cow, 0);
 
-            int change = record.get(cow) + lines[i].getChange();
+            int change = record.remove(cow) + lines[i].getChange();
 
             if(change != 0) record.put(cow, change);
 
@@ -55,14 +55,14 @@ public class Main {
 
                 if(lines[i].getChange() > 0) {
 
-                    if(maxCows.size() == 1 && maxCows.contains(cow)) {
-                        maxChange = change;
-                    } else {
+                    maxChange = change;
 
-                        maxChange = change;
+                    if(maxCows.size() != 1 || !maxCows.contains(cow)) {
+
                         maxCows.clear();
                         maxCows.add(cow);
-                        count++;
+
+                        count++; // Rose from sharing
 
                     }
 
@@ -71,7 +71,7 @@ public class Main {
                     if(maxCows.size() == 1) {
 
                         if(maxCows.contains(0)) {
-                            count++;
+                            count++; // Dropped from sharing
                         } else {
 
                             maxCows.clear();
@@ -88,32 +88,32 @@ public class Main {
 
                             }
 
-                            if(!(maxCows.size() == 1 && maxCows.contains(cow))) count++;
+                            if(!(maxCows.size() == 1 && maxCows.contains(cow))) count++; // Dropped
 
                         }
 
                     } else {
                         maxCows.remove(cow);
-                        count++;
+                        count++; // Dropped from sharing
                     }
 
                 }
 
             } else {
 
-                if(lines[i].getChange() > 0) {
+                if(change > maxChange) {
 
-                    if(change > maxChange) {
+                    maxCows.clear();
+                    maxCows.add(cow);
+                    maxChange = change;
 
-                        maxCows.clear();
-                        maxCows.add(cow);
-                        maxChange = change;
+                    count++; // Rose
 
-                        count++;
+                } else {
 
-                    } else if(change == maxChange) {
+                    if(change == maxChange) {
                         if(change != 0) maxCows.add(cow);
-                        count++;
+                        count++; // Rose to sharing
                     }
 
                 }
@@ -125,7 +125,6 @@ public class Main {
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("measurement.out")));
 
         pw.println(count);
-//        System.out.println(count);
 
         pw.close();
 
