@@ -88,7 +88,8 @@ public class Main {
 
                             }
 
-                            count++;
+                            if(!(maxCows.size() == 1 && maxCows.contains(cow))) count++;
+
                         }
 
                     } else {
@@ -124,6 +125,7 @@ public class Main {
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("measurement.out")));
 
         pw.println(count);
+//        System.out.println(count);
 
         pw.close();
 
