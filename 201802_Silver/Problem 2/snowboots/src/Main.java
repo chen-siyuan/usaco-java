@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -8,31 +7,9 @@ public class Main {
     public static int numBoots;
     public static int[] tiles;
     public static Boot[] boots;
-    public static int min;
-
-    public static void search(int position, int index) {
-
-        while(index < numBoots && boots[index].getDepth() < tiles[position]) index++;
-
-        if(index == numBoots) return;
-
-        if(position == numTiles - 1) min = Math.min(min, index);
-
-        ArrayList<Integer> potentials = new ArrayList<>();
-
-        potentials.add(Integer.MAX_VALUE);
-
-        for(int pointer = Math.min(numTiles - 1, position + boots[index].getStride()); pointer > position; pointer--)
-            if(tiles[pointer] <= Math.min(boots[index].getDepth(), potentials.get(0))) potentials.add(0, pointer);
-
-        for(int potential: potentials) if(potential != Integer.MAX_VALUE) search(potential, index);
-
-        search(position, index + 1);
-    }
+    public static int[] dp;
 
     public static void main(String[] args) throws IOException {
-
-        // TRY DYNAMIC PROGRAMMING
 
         BufferedReader br = new BufferedReader(new FileReader("snowboots.in"));
 
@@ -56,13 +33,17 @@ public class Main {
 
         br.close();
 
-        min = Integer.MAX_VALUE;
+        dp = new int[numTiles];
+        dp[0] = 0;
+        for(int i=1; i < numTiles; i++) dp[i] = numBoots;
 
-        search(0, 0);
+        for(int i=1; i < numTiles; i++) for(int j=0; j < i; j++) for(int k=dp[j]; k < numBoots; k++)
+            if(i - j <= boots[k].getStride() && Math.max(tiles[i], tiles[j]) <= boots[k].getDepth())
+                dp[i] = Math.min(dp[i], k);
 
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("snowboots.out")));
 
-        pw.println(min);
+        pw.println(dp[numTiles - 1]);
 
         pw.close();
 
