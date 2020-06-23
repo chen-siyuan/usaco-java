@@ -1,92 +1,72 @@
+import java.util.*;
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.StringTokenizer;
 
 public class Main {
 
-    public static int dimension;
-    public static int[][] map;
-    public static int color;
-    public static int count;
-    public static boolean[][] searched;
-    public static boolean flag;
-    public static int singleMax;
-    public static int doubleMax;
-    public static HashMap<HashSet<Integer>, Integer> pairs;
-    public static HashSet<Integer> pair;
-    public static HashMap<Integer, Integer> record;
+    public static final int[][] DIRS = new int[][]{new int[]{1, 0}, new int[]{0, 1}, new int[]{-1, 0}, new int[]{0, -1}};
 
-    public static boolean check(int x, int y) {
+    public static int n, numColonies;
+    public static int[][] colors, colonies;
+    public static boolean[][] searchedSingle;
+    public static int singleCurr, singleMax, doubleCurr, doubleMax;
+    public static int[] weight, colonyColors;
+    public static Set<Integer>[] al;
+    public static Set<Set<Integer>> pairs;
+    public static Set<Integer> pair;
+    public static boolean[] searchedDouble;
+    public static Map<Integer, Integer> record;
 
-        if(flag) {
-            return x >= 0 && y >= 0 && x < dimension && y < dimension && pair.contains(map[x][y]);
-        } else {
-            return x >= 0 && y >= 0 && x < dimension && y < dimension && map[x][y] == color;
-        }
+    public static void searchSingle(int x, int y, int color) {
+    
+        if(x < 0 || x >= n || y < 0 || y >= n || searchedSingle[x][y] || color != colors[x][y]) return;
+        searchedSingle[x][y] = true;
+        colonies[x][y] = numColonies;
+
+        singleCurr++;
+        singleMax = Math.max(singleMax, singleCurr);
+
+        for(int[] dir: DIRS) searchSingle(x + dir[0], y + dir[1], colors[x][y]);
 
     }
 
-    public static void search(int x, int y) {
+    public static void searchDouble(int colony) {
+    
+        if(searchedDouble[colony]) return;
+        searchedDouble[colony] = true;
 
-        if(searched[x][y]) return;
-        searched[x][y] = true;
+        doubleCurr += weight[colony];
+        doubleMax = Math.max(doubleMax, doubleCurr);
 
-        count++;
-
-        if(check(x + 1, y)) search(x + 1, y);
-        if(check(x - 1, y)) search(x - 1, y);
-        if(check(x, y + 1)) search(x, y + 1);
-        if(check(x, y - 1)) search(x, y - 1);
-
+        for(int neighbor: al[colony]) if(pair.contains(colonyColors[neighbor])) searchDouble(neighbor);
+    
     }
 
     public static void main(String[] args) throws IOException {
-
+    
         BufferedReader br = new BufferedReader(new FileReader("multimoo.in"));
-
+    
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        dimension = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
 
-        map = new int[dimension][dimension];
-        pairs = new HashMap<>();
+        colors = new int[n][n];
 
-        flag = false;
+        pairs = new HashSet<>();
+        record = new HashMap<>();
 
-        for(int i=0; i < dimension; i++) {
+        for(int i=0; i < n; i++) {
 
             st = new StringTokenizer(br.readLine());
 
-            for(int j=0; j < dimension; j++) {
+            for(int j=0; j < n; j++) {
 
-                map[i][j] = Integer.parseInt(st.nextToken());
+                colors[i][j] = Integer.parseInt(st.nextToken());
 
-                if(i != 0 && map[i][j] != map[i - 1][j]) {
+                if(i != 0) pairs.add(new HashSet<>(Arrays.asList(colors[i - 1][j], colors[i][j])));
+                if(j != 0) pairs.add(new HashSet<>(Arrays.asList(colors[i][j - 1], colors[i][j])));
 
-                    HashSet<Integer> temp = new HashSet<>();
-
-                    temp.add(map[i][j]);
-                    temp.add(map[i - 1][j]);
-
-                    if(!pairs.containsKey(temp)) pairs.put(temp, 0);
-
-                    pairs.put(temp, pairs.get(temp) + 1);
-
-                }
-
-                if(j != 0 && map[i][j] != map[i][j - 1]) {
-
-                    HashSet<Integer> temp = new HashSet<>();
-
-                    temp.add(map[i][j]);
-                    temp.add(map[i][j - 1]);
-
-                    if(!pairs.containsKey(temp)) pairs.put(temp, 0);
-
-                    pairs.put(temp, pairs.get(temp) + 1);
-
-                }
+                if(!record.containsKey(colors[i][j])) record.put(colors[i][j], 0);
+                record.put(colors[i][j], record.get(colors[i][j]) + 1);
 
             }
 
@@ -94,51 +74,68 @@ public class Main {
 
         br.close();
 
-        searched = new boolean[dimension][dimension];
-        singleMax = 0;
-        record = new HashMap<>();
+        searchedSingle = new boolean[n][n];
+        colonies = new int[n][n];
 
-        for(int i=0; i < dimension; i++) for(int j=0; j < dimension; j++) {
+        numColonies = 0;
+        singleMax = Integer.MIN_VALUE;
 
-            color = map[i][j];
-            count = 0;
+        weight = new int[n * n];
+        colonyColors = new int[n * n];
 
-            search(i, j);
+        for(int i=0; i < n; i++) for(int j=0; j < n; j++) if(!searchedSingle[i][j]) {
 
-            record.put(color, count);
+            singleCurr = 0;
+            searchSingle(i, j, colors[i][j]);
 
-            singleMax = Math.max(singleMax, count);
+            weight[numColonies] = singleCurr;
+            colonyColors[numColonies] = colors[i][j];
+
+            numColonies++;
 
         }
 
-        flag = true;
+        al = new Set[numColonies];
+        for(int i=0; i < numColonies; i++) al[i] = new HashSet<>();
 
-        for(HashSet<Integer> temp: pairs.keySet()) {
+        for(int i=0; i < n; i++) for(int j=0; j < n; j++) {
+
+            if(i != n - 1) {
+                al[colonies[i + 1][j]].add(colonies[i][j]);
+                al[colonies[i][j]].add(colonies[i + 1][j]);
+            }
+
+            if(j != n - 1) {
+                al[colonies[i][j + 1]].add(colonies[i][j]);
+                al[colonies[i][j]].add(colonies[i][j + 1]);
+            }
+
+        }
+
+        for(int i=0; i < numColonies; i++) al[i].remove(i);
+
+        doubleMax = singleMax;
+
+        for(Set<Integer> temp: pairs) {
+            
+            if(temp.size() == 1) continue;
 
             int sum = 0;
 
-            for(int value: temp) sum += record.get(value);
+            for(int color: temp) sum += record.get(color);
 
-            if(pairs.get(temp) + sum <= doubleMax) continue;
-
+            if(sum <= doubleMax) continue;
+        
             pair = temp;
 
-            searched = new boolean[dimension][dimension];
+            searchedDouble = new boolean[numColonies];
 
-            for(int i=0; i < dimension; i++) for(int j=0; j < dimension; j++)
-                if(temp.contains(map[i][j])) {
-
-                    count = 0;
-
-                    search(i, j);
-
-                    doubleMax = Math.max(doubleMax, count);
-
-                }
-
+            for(int i=0; i < numColonies; i++) if(pair.contains(colonyColors[i]) && !searchedDouble[i]) {
+                doubleCurr = 0;
+                searchDouble(i);
+            }
+        
         }
-
-//        System.out.println(doubleMax);
 
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("multimoo.out")));
 
