@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Test {
 
     public static int dimension;
     public static int[][] map;
