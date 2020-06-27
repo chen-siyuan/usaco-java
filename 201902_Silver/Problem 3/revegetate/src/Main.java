@@ -3,11 +3,13 @@ import java.util.*;
 
 public class Main {
 
-    public static int n, k;
+    public static int n, k, res;
     public static int[] parent;
     public static Set<List<Integer>> edges;
+    public static Map<Integer, Integer> record;
+    public static Set<Integer>[] al;
+    public static int[] colors;
     public static boolean flag;
-    public static List<Integer>[] al;
 
     public static void main(String[] args) throws IOException {
     
@@ -36,9 +38,41 @@ public class Main {
 
         br.close();
 
-        for(int i=0; i < n; i++) parent[i] = find(i);
+        record = new HashMap<>();
+
+        for(int i=0; i < n; i++) {
+            parent[i] = find(i);
+            if(!record.containsKey(parent[i])) record.put(parent[i], record.size());
+        }
+
+        al = new HashSet[record.size()];
+        for(int i=0; i < record.size(); i++) al[i] = new HashSet<>();
+
+        for(List<Integer> edge: edges) {
+            al[record.get(parent[edge.get(0)])].add(record.get(parent[edge.get(1)]));
+            al[record.get(parent[edge.get(1)])].add(record.get(parent[edge.get(0)]));
+        }
+
+        flag = false;
+        colors = new int[record.size()];
+        res = 0;
+
+        for(int i=0; i < record.size(); i++) if(colors[i] == 0) {
+            res++;
+            search(i, 1);
+        }
 
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("revegetate.out")));
+
+        if(flag) {
+            pw.println(0);
+        } else {
+
+            pw.print('1');
+            for(int i=0; i < res; i++) pw.print('0');
+            pw.println();
+
+        }
 
         pw.close();
     
@@ -50,6 +84,20 @@ public class Main {
 
     public static void union(int val1, int val2) {
         parent[find(val2)] = find(val1);
+    }
+
+    public static void search(int colony, int color) {
+
+        if(flag) return;
+        if(colors[colony] == 0) {
+            colors[colony] = color;
+        } else {
+            if(colors[colony] != color) flag = true;
+            return;
+        }
+
+        for(int neighbor: al[colony]) search(neighbor, -color);
+    
     }
 
 }
