@@ -86,7 +86,7 @@ public class Main {
 
             for(int i=0; i < n; i++) {
                 if(cnt[par[i]] == 0) cnt[par[i]] = ++co;
-                System.out.println(cnt[par[i]]);
+                pw.println(cnt[par[i]]);
             }
             
         } catch(Exception e) {
