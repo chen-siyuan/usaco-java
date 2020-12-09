@@ -3,117 +3,94 @@ import java.io.*;
 
 public class Main {
 
-    public static class Node {
+    public static void merge(List<Integer>[] al, int[] par, List<Integer>[] rpar, Queue<Integer> q, int a, int b) {
 
-        private Set<Integer> vals, rers, reds;
+        a = par[a];
+        b = par[b];
 
-        public Node() {
-            vals = new HashSet<>();
-            rers = new HashSet<>();
-            reds = new HashSet<>();
+        if(rpar[a].size() < rpar[b].size()) {
+            int temp = a;
+            a = b;
+            b = temp;
         }
 
-        public Node(int val) {
-            this();
-            vals.add(val);
+        for(int t: rpar[b]) {
+            par[t] = a;
+            rpar[a].add(t);
         }
 
+        al[a].addAll(al[b]);
+        al[b].clear();
+
+        if(al[a].size() > 1) q.offer(a);
+
     }
 
-    public static void union(int[] parents, int a, int b) {
-        parents[find(parents, b)] = find(parents, a);
-    }
-
-    public static int find(int[] parents, int a) {
-        if(parents[a] == a) return a;
-        return (parents[a] = find(parents, parents[a]));
-    }
-
+    
     public static void main(String[] args) {
-
-        int n = 0;
-        int m = 0;
-        int[] parents = null;
-        Map<Integer, Node> map = new HashMap<>();
+        
+        int n = 0, m = 0;
+        List<Integer>[] al = null;
 
         try(BufferedReader br = new BufferedReader(new FileReader("fcolor.in"))) {
 
             StringTokenizer st = new StringTokenizer(br.readLine());
-
+            
             n = Integer.parseInt(st.nextToken());
             m = Integer.parseInt(st.nextToken());
-            parents = new int[n];
-            for(int i=0; i < n; i++) {
-                parents[i] = i;
-                map.put(i, new Node(i));
-            }
+
+            al = new ArrayList[n];
+            for(int i=0; i < n; i++) al[i] = new ArrayList<>();
 
             for(int i=0; i < m; i++) {
-
                 st = new StringTokenizer(br.readLine());
-
-                int admired = Integer.parseInt(st.nextToken()) - 1;
-                int admirer = Integer.parseInt(st.nextToken()) - 1;
-
-                map.get(admired).rers.add(admirer);
-                map.get(admirer).reds.add(admired);
-                
+                al[Integer.parseInt(st.nextToken()) - 1].add(Integer.parseInt(st.nextToken()) - 1);
             }
-
+            
         } catch(Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
-        boolean flag;
-        do {
+        int[] par = new int[n];
+        List<Integer>[] rpar = new ArrayList[n];
+        Queue<Integer> q = new LinkedList<>();
 
-            flag = false;
-            for(int i=0; i < n; i++) {
+        for(int i=0; i < n; i++) {
 
-                Node node = map.get(i);
-                if(node != null && node.rers.size() > 1) {
+            par[i] = i;
+            rpar[i] = new ArrayList<>();
+            rpar[i].add(i);
+            if(al[i].size() > 1) q.offer(i);
 
-                    flag = true;
+        }
 
-                    Node temp = null;
-                    Integer val = null;
+        while(!q.isEmpty()) {
 
-                    for(int j: node.rers) if(val == null) {
-                        val = find(parents, j);
-                        temp = map.get(val);
-                    } else {
-
-                        Node rer = map.get(find(parents, j));
-
-                        temp.vals.addAll(rer.vals);
-                        temp.rers.addAll(rer.rers);
-                        for(int k: rer.rers) {
-                            Set<Integer> kSet = map.get(find(parents, k)).reds;
-                            kSet.remove()
-                        }
-
-                        temp.reds.addAll(rer.reds);
-
-
-                        map.put(j, null);
-                        union(parents, val, j);
-
-                    }
-
-                    node.rers.clear();
-                    node.rers.add(val);
-
-                }
-
+            int curr = q.peek();
+            if(al[curr].size() < 2) {
+                q.poll();
+                continue;
             }
 
-        } while(flag);
+            int rer = al[curr].remove(0);
+            if(par[rer] == par[al[curr].get(0)]) continue;
 
-        System.out.println(Arrays.toString(parents));
+            merge(al, par, rpar, q, rer, al[curr].get(0));
+
+        }
 
         try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("fcolor.out")))) {
+
+            int co = 0;
+            int[] cnt = new int[n];
+
+            for(int i=0; i < n; i++) {
+                if(cnt[par[i]] == 0) cnt[par[i]] = ++co;
+                System.out.println(cnt[par[i]]);
+            }
+            
         } catch(Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
     }
