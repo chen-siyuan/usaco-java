@@ -4,9 +4,9 @@ import java.io.*;
 public class Main {
 
     public static void main(String[] args) {
-        
+
         int n = 0, m = 0, k = 0;
-        int[] l = null;
+        int[] p = null;
 
         try(BufferedReader br = new BufferedReader(new FileReader("swap.in"))) {
 
@@ -16,21 +16,17 @@ public class Main {
             m = Integer.parseInt(st.nextToken());
             k = Integer.parseInt(st.nextToken());
 
-            l = new int[n];
-            for(int i=0; i < n; i++) l[i] = i;
+            p = new int[n];
+            for(int i=0; i < n; i++) p[i] = i;
 
             for(int i=0; i < m; i++) {
 
                 st = new StringTokenizer(br.readLine());
 
-                int s = Integer.parseInt(st.nextToken()) - 1;
-                int e = Integer.parseInt(st.nextToken()) - 1;
+                int l = Integer.parseInt(st.nextToken()) - 1;
+                int r = Integer.parseInt(st.nextToken()) - 1;
 
-                for(int j=s; j < (s + e + 1) / 2; j++) {
-                    int temp = l[j];
-                    l[j] = l[s + e - j];
-                    l[s + e - j] = temp;
-                }
+                for(int j=0; j < n; j++) if(l <= p[j] && p[j] <= r) p[j] = l + r - p[j];
 
             }
             
@@ -38,32 +34,41 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        int[] mod = new int[n];
+        int[] par = new int[n];
+        int[] pos = new int[n];
+        List<List<Integer>> cycles = new ArrayList<>();
 
-        for(int i=0; i < n; i++) if(mod[i] == 0) {
+        int cnt = 0;
+        for(int i=0; i < n; i++) if(par[i] == 0) {
 
-            Set<Integer> memo = new HashSet<>();
+            cnt++;
 
-            int temp = i;
-            while(!memo.contains(temp)) {
-                memo.add(temp);
-                temp = l[temp];
-            }
+            List<Integer> cycle = new ArrayList<>();
 
-            for(int j: memo) mod[j] = memo.size();
+            int ord = 0;
+            int nxt = i;
+            boolean flag = true;
+            do {
+                cycle.add(nxt);
+                par[nxt] = cnt;
+                pos[nxt] = ord++;
+                nxt = p[nxt];
+            } while(nxt != i);
+
+            cycles.add(cycle);
 
         }
 
+        int[] ans = new int[n];
+        
         try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("swap.out")))) {
 
             for(int i=0; i < n; i++) {
-
-                int temp = i;
-                for(int j=0; j < k % mod[i]; j++) temp = l[temp];
-
-                pw.println(temp + 1);
-
+                List<Integer> cycle = cycles.get(par[i] - 1);
+                ans[cycle.get((pos[i] + k) % cycle.size())] = i;
             }
+
+            for(int i=0; i < n; i++) pw.println(ans[i] + 1);
             
         } catch(Exception e) {
             System.out.println(e.getMessage());
