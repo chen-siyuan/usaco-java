@@ -3,14 +3,6 @@ import java.io.*;
 
 public class Main {
 
-    public static void DFS(int[] gain, List<Integer>[] adj, int pos, int len, int sum, int[] memo, int max) {
-
-        if(pos == 0 && memo[0] < sum) memo[0] = sum;
-        if(len * 2 + 1 >= max) return;
-
-        for(int nbor: adj[pos]) DFS(gain, adj, nbor, len + 1, sum + gain[nbor] - len * 2 - 1, memo, max);
-    }
-    
     public static void main(String[] args) {
 
         int n = 0, m = 0, c = 0;
@@ -40,15 +32,22 @@ public class Main {
             System.out.println(e);
         }
 
-        int max = Integer.MIN_VALUE;
-        for(int val: gain) max = Math.max(max, val);
+        int res = 0;
+        int[] dp = new int[n], prev = new int[n];
+        for(int i=1; i < n; i++) prev[i] = Integer.MIN_VALUE;
+        for(int i=0; i < 1000; i++) {
 
-        int[] res = new int[1];
-        DFS(gain, adj, 0, 0, 0, res, max);
+            for(int j=0; j < n; j++) dp[j] = Integer.MIN_VALUE;
+            for(int j=0; j < n; j++) if(prev[j] != Integer.MIN_VALUE)
+                for(int nbor: adj[j]) dp[nbor] = Math.max(dp[nbor], prev[j] + gain[nbor] - (2 * i + 1) * c);
+            for(int j=0; j < n; j++) prev[j] = dp[j];
 
+            res = Math.max(res, prev[0]);
+
+        }
 
         try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("time.out")))) {
-            pw.println(res[0]);
+            pw.println(res);
         } catch(Exception e) {
             System.out.println(e);
         }
