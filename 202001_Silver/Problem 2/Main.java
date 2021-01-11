@@ -51,7 +51,6 @@ public class Main {
 
         try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("loan.out")))) {
             pw.println(l);
-            // System.out.println(l);
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -62,12 +61,27 @@ public class Main {
 
         if(x * m >= n) return false;
 
-        long a = Math.min((long)Math.ceil((Math.log(n) - Math.log(x) - Math.log(m)) / (Math.log(x) - Math.log(x - 1))), k);
+        long res = 0, cnt = 0, y;
 
-        long res = n - (long)Math.round(n * Math.pow(1 - 1. / x, a)) + (k - a) * m;
-        // System.out.println(String.format("%d %d %d", x, a, res));
+        while(true) {
 
-        return res >= n;
+            if(res >= n) return true;
+
+            if((y = (n - res) / x) <= m) break;
+            long z = (n - res - x * y) / y + 1;
+
+            res += z * y;
+            cnt += z;
+
+            if(cnt >= k) {
+                res -= (cnt - k) * y;
+                cnt = k;
+                break;
+            }
+
+        }
+
+        return res + m * (k - cnt) >= n;
     }
 
 }
