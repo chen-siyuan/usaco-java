@@ -83,11 +83,43 @@ public class Main {
                     if(Y[e] <= Y[A.get((l + r) / 2)]) r = (l + r) / 2;
                     else l = (l + r) / 2 + 1;
                 A.add(l, e);
+
+                // int tmp;
+                // if(l != 0 && check(X, Y, e / 2, (tmp = A.get(l - 1) / 2))) {
+                    // res0 = Math.min(e / 2, tmp);
+                    // res1 = Math.max(e / 2, tmp);
+                    // break;
+                // }
+                // if(l != A.size() - 1 && check(X, Y, e / 2, (tmp = A.get(l + 1) / 2))) {
+                    // res0 = Math.min(e / 2, tmp);
+                    // res1 = Math.max(e / 2, tmp);
+                    // break;
+                // }
+
             }
 
         } else {
             
             int index = A.indexOf(e - 1);
+            if(index != 0) {
+
+                System.out.println(index);
+
+                int k = A.get(index + 1) / 2;
+                System.out.println(X[k * 2]);
+                System.out.println(X[k * 2 + 1]);
+                System.out.println(Y[k * 2]);
+                System.out.println(Y[k * 2 + 1]);
+                System.out.println(e / 2);
+                System.out.println(k);
+                System.out.println(check(X, Y, e / 2, A.get(index + 1) / 2));
+
+
+                System.out.println(check(X, Y, e / 2, A.get(index - 1) / 2));
+                System.out.println(A.get(index + 1));
+                System.out.println(check(X, Y, e / 2, A.get(index + 1) / 2));
+
+            }
             int tmp;
 
             if(index != 0 && check(X, Y, e / 2, (tmp = A.get(index - 1) / 2))) {
@@ -136,32 +168,39 @@ public class Main {
     }
 
     public static boolean check(int[] X, int[] Y, int a, int b) {
-        //TODO Complete rigorous line intersection check
 
         long[] u = new long[]{X[b * 2] - X[a * 2], Y[b * 2] - Y[a * 2]};
         long[] v = new long[]{X[b * 2 + 1] - X[a * 2], Y[b * 2 + 1] - Y[a * 2]};
         long[] w = new long[]{X[a * 2 + 1] - X[a * 2], Y[a * 2 + 1] - Y[a * 2]};
 
         // double alpha = 1. * (w[0] * v[1] - w[1] * v[0]) / (u[0] * v[1] - u[1] * v[0]);
-        // double beta = 1. * (-w[0] * u[1] + w[1] * u[0]) / (u[0] * v[1] - u[1] * v[0]);
-
-        // return alpha + beta >= 1 && alpha >= 0 && beta >= 0;
-
         long alpha = w[0] * v[1] - w[1] * v[0];
+        // double beta = 1. * (-w[0] * u[1] + w[1] * u[0]) / (u[0] * v[1] - u[1] * v[0]);
         long beta = -w[0] * u[1] + w[1] * u[0];
         long gamma = u[0] * v[1] - u[1] * v[0];
 
-        if(gamma > 0) return alpha + beta >= gamma && alpha >= 0 && beta >= 0;
-        if(gamma < 0) return alpha + beta <= gamma && alpha <= 0 && beta <= 0;
+        if(gamma < 0) {
+            alpha *= -1;
+            beta *= -1;
+            gamma *= -1;
+        }
 
-        if(
-                u[0] == 0 && u[1] == 0
-                v[0] == 0 && v[1] == 0
+        if(a == 99999 && b == 89999) {
+            System.out.println("****");
+            // System.out.println(Arrays.toString(u));
+            // System.out.println(Arrays.toString(v));
+            // System.out.println(Arrays.toString(w));
+            // System.out.println(alpha);
+            // System.out.println(beta);
+            // System.out.println(al);
+            System.out.println(gamma);
+            System.out.println("****");
+        }
 
+        // System.out.printf("%.2f %.2f\n", alpha, beta);
 
-
-                ) return true;
-
+        // return alpha + beta >= 1 && alpha >= 0 && beta >= 0;
+        return alpha + beta >= gamma && alpha >= 0 && beta >= 0;
     }
 
 }

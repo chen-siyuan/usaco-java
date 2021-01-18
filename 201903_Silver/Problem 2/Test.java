@@ -136,32 +136,17 @@ public class Main {
     }
 
     public static boolean check(int[] X, int[] Y, int a, int b) {
-        //TODO Complete rigorous line intersection check
 
         long[] u = new long[]{X[b * 2] - X[a * 2], Y[b * 2] - Y[a * 2]};
         long[] v = new long[]{X[b * 2 + 1] - X[a * 2], Y[b * 2 + 1] - Y[a * 2]};
         long[] w = new long[]{X[a * 2 + 1] - X[a * 2], Y[a * 2 + 1] - Y[a * 2]};
 
-        // double alpha = 1. * (w[0] * v[1] - w[1] * v[0]) / (u[0] * v[1] - u[1] * v[0]);
-        // double beta = 1. * (-w[0] * u[1] + w[1] * u[0]) / (u[0] * v[1] - u[1] * v[0]);
+        double alpha = 1. * (w[0] * v[1] - w[1] * v[0]) / (u[0] * v[1] - u[1] * v[0]);
+        double beta = 1. * (-w[0] * u[1] + w[1] * u[0]) / (u[0] * v[1] - u[1] * v[0]);
 
-        // return alpha + beta >= 1 && alpha >= 0 && beta >= 0;
+        // System.out.printf("%.2f %.2f\n", alpha, beta);
 
-        long alpha = w[0] * v[1] - w[1] * v[0];
-        long beta = -w[0] * u[1] + w[1] * u[0];
-        long gamma = u[0] * v[1] - u[1] * v[0];
-
-        if(gamma > 0) return alpha + beta >= gamma && alpha >= 0 && beta >= 0;
-        if(gamma < 0) return alpha + beta <= gamma && alpha <= 0 && beta <= 0;
-
-        if(
-                u[0] == 0 && u[1] == 0
-                v[0] == 0 && v[1] == 0
-
-
-
-                ) return true;
-
+        return alpha + beta >= 1 && alpha >= 0 && beta >= 0;
     }
 
 }
