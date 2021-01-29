@@ -41,9 +41,29 @@ public class Main {
 
     public static void main(String[] args) {
         
-        FastReader fr = new FastReader("cereal.in");
+        FastReader fr = new FastReader();
 
-        int n = fr.nextInt(), m = fr.nextInt();
+        int n = fr.nextInt();
+
+        // M[i][j]: val at (i, j)
+        int[][] M = new int[n][n];
+        for(int i=0; i < n; i++) for(int j=0; j < n; j++) M[i][j] = fr.nextInt();
+
+        int h = 0;
+        for(int i=0; i < n; i++) {
+            int[] tmp = new int[2];
+            for(int j=0; j < n; j++) tmp[j % 2] += M[i][j];
+            h += Math.max(tmp[0], tmp[1]);
+        }
+
+        int v = 0;
+        for(int j=0; j < n; j++) {
+            int[] tmp = new int[2];
+            for(int i=0; i < n; i++) tmp[i % 2] += M[i][j];
+            v += Math.max(tmp[0], tmp[1]);
+        }
+
+        System.out.println(Math.max(h, v));
 
     }
 
